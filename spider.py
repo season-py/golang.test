@@ -57,12 +57,12 @@ def go():
         messages = content.find('div', {'class': 'spb-event-count'}).text
         members = members_pattern.findall(messages)[0][0]
         if int(members) >= 32:
-            print '活动超载，孩纸，洗洗睡吧！', '[%s]' % title
+            print '活动超载，孩纸，洗洗睡吧~', '[%s]' % title
         else:
-            print '有机可乘~', '[%s]' % title
+            print '有基可乘~', '[%s]' % title
             join_content = content.find('a', text=u'我要报名')
             if not join_content:
-                print '榜上有名啦！'
+                print '榜上有名啦~'
                 continue
             content = BeautifulSoup(
                 request(domain+join_content.findParent().get('href', ''))
