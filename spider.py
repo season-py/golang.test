@@ -17,7 +17,7 @@ session = {'SBVerifyCode': 'byJlzq7u9JpWkPAIxPgD/1P51sY=',
     '.SPBForms': 'B0BEEB669AC25A5CF293539262A5C7649BAB05DEF14A3FD5B4E13E090CFFFB73B941F9024140559C8A869C8CC0983A74148BD97E9FC41A48CB60972BDF54A6EC64C156A93178B3ED'
 }
 
-post = {'email': 'haishanzhang@cyou-inc.com',
+post = {'email': '***@cyou-inc.com',
     'body': 'splider man',
     'bringCount': '0'
     }
