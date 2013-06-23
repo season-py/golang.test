@@ -46,8 +46,15 @@ def apply_thread(form_url, session, post):
     ipost = urllib.urlencode(post)
     req = urllib2.Request(form_url, data=ipost)
     content = BeautifulSoup(request(req, session=session))
-    print content.find('div', {'class': 'tn-helper-flowfix'}).text
-
+    lock.acquire()
+    try:
+        print content.find('div', {'class': 'tn-helper-flowfix'}).text
+    except Exception, err:
+        print err
+    else:
+        pass
+    finally:
+        lock.release()
 
 def apply(form_url):
     thread_list = []
