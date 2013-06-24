@@ -20,12 +20,12 @@ apply_session_list = [({'.SPBForms': 'B0BEEB669AC25A5CF293539262A5C7649BAB05DEF1
    'SBVerifyCode': 'byJlzq7u9JpWkPAIxPgD/1P51sY='},
   {'body': 'splider man',
    'bringCount': '0',
-   'email': '1@cyou-inc.com'}),
+   'email': 'haishanzhang@cyou-inc.com'}),
  ({'.SPBForms': '130B56B5A33463ECB8F5D5441EA0F3BEDA3096EC9305804A161AC18C3305BD474A6D995D91BAD43949586F1FFE7D4BF63D4D39ED910F2E198E8EFB7E32B344B13EC792D46200F5CD',
    'SBVerifyCode': '/XA45456dE6O1w0TUIL+N9BQzR8='},
   {'body': 'splider man',
    'bringCount': '0',
-   'email': '2@cyou-inc.com'})]
+   'email': 'hongxuanwu@cyou-inc.com'})]
 
 
 def setcookie(func):
@@ -91,7 +91,7 @@ def go():
         if int(members) >= 32:
             print '活动超载，孩纸，洗洗睡吧~', '[%s]' % title
         else:
-            print '有基可乘~', '[%s]' % title
+            print '有基可乘~', '[%s]' % title, 
             join_content = content.find('a', text=u'我要报名')
             if not join_content:
                 print '榜上有名啦~'
@@ -103,4 +103,10 @@ def go():
             apply(form_url)
 
 if __name__ == '__main__':
-    go()
+    import time
+    while True:
+        try:
+            go()
+        except AttributeError, err:
+            print err
+        time.sleep(20)
