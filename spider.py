@@ -40,7 +40,14 @@ def setcookie(func):
 
 @setcookie
 def request(req, session=None):
-    return urllib2.urlopen(req).read()
+    content = ''
+    try:
+        content = urllib2.urlopen(req, timeout=0.1).read()
+    except urllib2.URLError, err:
+        print err
+    return content
+
+
 
 def apply_thread(form_url, session, post):
     ipost = urllib.urlencode(post)
@@ -58,7 +65,7 @@ def apply_thread(form_url, session, post):
 
 def apply(form_url):
     thread_list = []
-    for session, post in apply_session_list:
+    for session, post in apply_session_list[1:]:
         t = Thread(target=apply_thread, args=(form_url, session, post))
         thread_list.append(t)
 
@@ -73,7 +80,7 @@ def go():
     domain = 'http://10.5.17.74'
     url = domain + '/c/musle/whatEvents.aspx'
 
-    for item in events_pattern.findall(request(url))+['/whatEvents.aspx/T-115']:
+    for item in events_pattern.findall(request(url)):
         if already_req_url[item] == 1:
             continue
         title, content = None, None
@@ -109,4 +116,4 @@ if __name__ == '__main__':
             go()
         except AttributeError, err:
             print err
-        time.sleep(20)
+        time.sleep(5)
