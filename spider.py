@@ -47,7 +47,7 @@ def setcookie(func):
 def request(req, session=None):
     content = ''
     try:
-        content = urllib2.urlopen(req, timeout=0.1).read()
+        content = urllib2.urlopen(req, timeout=1).read()
     except urllib2.URLError, err:
         print err
     return content
