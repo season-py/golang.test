@@ -1,5 +1,5 @@
-#coding=utf-8
-#author:season
+# coding=utf-8
+# author:season
 import re
 import urllib
 import random
@@ -9,23 +9,24 @@ from collections import defaultdict
 from BeautifulSoup import BeautifulSoup
 from threading import Thread, RLock
 '''
-just for fun  
+just for fun
 '''
 cookie = urllib2.HTTPCookieProcessor(cookielib.LWPCookieJar())
 opener = urllib2.build_opener(cookie)
 urllib2.install_opener(opener)
 lock = RLock()
 
-apply_session_list = [({'.SPBForms': 'B0BEEB669AC25A5CF293539262A5C7649BAB05DEF14A3FD5B4E13E090CFFFB73B941F9024140559C8A869C8CC0983A74148BD97E9FC41A48CB60972BDF54A6EC64C156A93178B3ED',
-   'SBVerifyCode': 'byJlzq7u9JpWkPAIxPgD/1P51sY='},
-  {'body': 'spider man',
-   'bringCount': '0',
-   'email': 'haishanzhang@cyou-inc.com'}),
- ({'.SPBForms': '130B56B5A33463ECB8F5D5441EA0F3BEDA3096EC9305804A161AC18C3305BD474A6D995D91BAD43949586F1FFE7D4BF63D4D39ED910F2E198E8EFB7E32B344B13EC792D46200F5CD',
-   'SBVerifyCode': '/XA45456dE6O1w0TUIL+N9BQzR8='},
-  {'body': 'spider man',
-   'bringCount': '0',
-   'email': 'hongxuanwu@cyou-inc.com'})]
+apply_session_list = [(
+    {'.SPBForms': 'B0BEEB669AC25A5CF293539262A5C7649BAB05DEF14A3FD5B4E13E090CFFFB73B941F9024140559C8A869C8CC0983A74148BD97E9FC41A48CB60972BDF54A6EC64C156A93178B3ED',
+     'SBVerifyCode': 'byJlzq7u9JpWkPAIxPgD/1P51sY='},
+    {'body': 'spider man',
+     'bringCount': '0',
+     'email': 'haishanzhang@cyou-inc.com'}),
+    ({'.SPBForms': '130B56B5A33463ECB8F5D5441EA0F3BEDA3096EC9305804A161AC18C3305BD474A6D995D91BAD43949586F1FFE7D4BF63D4D39ED910F2E198E8EFB7E32B344B13EC792D46200F5CD',
+      'SBVerifyCode': '/XA45456dE6O1w0TUIL+N9BQzR8='},
+     {'body': 'spider man',
+      'bringCount': '0',
+      'email': 'hongxuanwu@cyou-inc.com'})]
 
 
 def setcookie(func):
@@ -34,10 +35,13 @@ def setcookie(func):
             req = urllib2.Request(req)
         if not session:
             session = random.choice(apply_session_list)[0]
-        req.add_header('Cookie', ';'.join(['='.join(i) for i in session.items()]))
-        req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6')
+        req.add_header(
+            'Cookie', ';'.join(['='.join(i) for i in session.items()]))
+        req.add_header(
+            'User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6')
         return func(req)
     return wrapper
+
 
 @setcookie
 def request(req, session=None):
@@ -47,7 +51,6 @@ def request(req, session=None):
     except urllib2.URLError, err:
         print err
     return content
-
 
 
 def apply_thread(form_url, session, post):
@@ -63,6 +66,7 @@ def apply_thread(form_url, session, post):
         pass
     finally:
         lock.release()
+
 
 def apply(form_url):
     thread_list = []
@@ -88,7 +92,7 @@ def go():
         title, content = None, None
         try:
             already_req_url[item] += 1
-            content = BeautifulSoup(request(domain+item))
+            content = BeautifulSoup(request(domain + item))
             title = content.title.text
         except urllib2.HTTPError:
             continue
@@ -102,15 +106,15 @@ def go():
         if int(members) >= 32:
             print '活动超载，孩纸，洗洗睡吧~', '[%s]' % title
         else:
-            print '有基可乘~', '[%s]' % title, 
+            print '有基可乘~', '[%s]' % title,
             join_content = content.find('a', text=u'我要报名')
             if not join_content:
                 print '榜上有名啦~'
                 continue
             content = BeautifulSoup(
-                request(domain+join_content.findParent().get('href', ''))
-                )
-            form_url = domain+content.find('form').get('action', '')
+                request(domain + join_content.findParent().get('href', ''))
+            )
+            form_url = domain + content.find('form').get('action', '')
             apply(form_url)
 
 if __name__ == '__main__':
